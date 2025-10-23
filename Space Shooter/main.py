@@ -10,10 +10,9 @@ clock = pygame.time.Clock()
 
 pygame.display.set_caption('Space Shooter')
 player_surf = pygame.image.load(join('Space Shooter', 'Assets', 'images', 'player.png')).convert_alpha()
-player_rect = player_surf.get_frect(center = (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
+player_rect = player_surf.get_frect(midbottom = (WINDOW_WIDTH / 2, WINDOW_HEIGHT - 30))
 player_direction = pygame.math.Vector2()
 player_speed = 300
-
 star_surf = pygame.image.load(join('Space Shooter', 'Assets', 'images', 'star.png')).convert_alpha()
 star_positions = [(random.randint(0, 1180), random.randint(0, 620)) for _ in range(20)]
 
