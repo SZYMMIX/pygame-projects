@@ -34,6 +34,7 @@ display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 running = True
 clock = pygame.time.Clock()
 pygame.display.set_caption('Space Shooter')
+
 all_sprites = pygame.sprite.Group()
 
 star_surf = pygame.image.load(join('Space Shooter', 'Assets', 'images', 'star.png')).convert_alpha()
