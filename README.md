@@ -1,19 +1,25 @@
-# 🎮 Pygame Projects
+# 🎮 Pygame Projects Collection
 
-Welcome! This repository is a collection of games I've created using Python and the Pygame library.
+Welcome! This repository is a collection of games I've created using Python and the Pygame library. Each game is located in its own folder with a dedicated `README` file explaining its features and controls.
+
+---
 
 ## 🕹️ The Games
 
 ### 🚀 Space Shooter
-A classic top-down arcade shooter. Your mission is to pilot a spaceship, dodge enemy fire, and destroy as many meteors as you can to achieve a high score.
+A classic top-down arcade shooter where you pilot a spaceship to survive a meteor storm.
 
-**How to Run:**
+**[➡️ Click here for gameplay details, screenshots, and controls](./Space Shooter/)**
+
+**Quick Start:**
 1. Navigate to the game's directory: `cd "Space Shooter"`
-2. Run the main script: `python main.py` (or `python3 main.py`)
+2. Run the main script: `python main.py`
 
-## 🛠️ Requirements
+---
 
-To run these games, you will need Python and the Pygame library installed.
+## 🛠️ Global Requirements
+
+All projects in this repository require Python and the Pygame library.
 
 You can install Pygame using pip:
 ```bash
