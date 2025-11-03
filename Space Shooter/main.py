@@ -17,7 +17,7 @@ BACKGROUND_COLOR = (6, 6, 33, 0.8)
 class Player(pygame.sprite.Sprite):
     def __init__(self, groups, create_laser):
         super().__init__(groups)
-        self.image = pygame.image.load(join('Space Shooter', 'Assets', 'images', 'player.png')).convert_alpha()
+        self.image = pygame.image.load(join('Assets', 'images', 'player.png')).convert_alpha()
         self.rect = self.image.get_frect(center = (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 1.2))
         self.speed = PLAYER_SPEED
         self.direction = pygame.math.Vector2()
@@ -134,17 +134,17 @@ class Game:
         self.game_music.play(-1)
     
     def _load_assets(self):
-        self.font = pygame.font.Font(join('Space Shooter', 'Assets', 'images', 'Oxanium-Bold.ttf'), 60)
-        self.star_surf = pygame.image.load(join('Space Shooter', 'Assets', 'images', 'star.png')).convert_alpha()
-        self.meteor_surf = pygame.image.load(join('Space Shooter', 'Assets', 'images', 'meteor.png')).convert_alpha()
-        self.laser_surf = pygame.image.load(join('Space Shooter', 'Assets', 'images', 'laser.png')).convert_alpha()
-        self.explosion_frames = [pygame.image.load(join('Space Shooter', 'Assets', 'images', 'explosion', f'{i}.png')).convert_alpha() for i in range(21)]
+        self.font = pygame.font.Font(join('Assets', 'images', 'Oxanium-Bold.ttf'), 60)
+        self.star_surf = pygame.image.load(join('Assets', 'images', 'star.png')).convert_alpha()
+        self.meteor_surf = pygame.image.load(join('Assets', 'images', 'meteor.png')).convert_alpha()
+        self.laser_surf = pygame.image.load(join('Assets', 'images', 'laser.png')).convert_alpha()
+        self.explosion_frames = [pygame.image.load(join('Assets', 'images', 'explosion', f'{i}.png')).convert_alpha() for i in range(21)]
 
-        self.laser_sound = pygame.mixer.Sound(join('Space Shooter', 'Assets', 'audio', 'laser.wav'))
+        self.laser_sound = pygame.mixer.Sound(join('Assets', 'audio', 'laser.wav'))
         self.laser_sound.set_volume(0.07)
-        self.explosion_sound = pygame.mixer.Sound(join('Space Shooter', 'Assets', 'audio', 'explosion.wav'))
+        self.explosion_sound = pygame.mixer.Sound(join('Assets', 'audio', 'explosion.wav'))
         self.explosion_sound.set_volume(0.07)
-        self.game_music = pygame.mixer.Sound(join('Space Shooter', 'Assets', 'audio', 'game_music.wav'))
+        self.game_music = pygame.mixer.Sound(join('Assets', 'audio', 'game_music.wav'))
         self.game_music.set_volume(0.04)
 
     def create_laser(self, pos):
