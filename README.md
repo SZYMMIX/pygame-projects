@@ -9,6 +9,7 @@ Welcome! This repository is a collection of games I've created using Python and 
 ### 🚀 Space Shooter
 A classic top-down arcade shooter where you pilot a spaceship to survive a meteor storm.
 
+
 **[➡️ Click here for gameplay details, screenshots, and controls](./Space%20Shooter/)**
 
 
