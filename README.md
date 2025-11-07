@@ -17,6 +17,7 @@ A classic top-down arcade shooter where you pilot a spaceship to survive a meteo
 1. Navigate to the game's directory: `cd "Space Shooter"`
 2. Run the main script: `python main.py`
 
+---
 
 ### ✨ Spellbound Ramblers
 A classic top-down shooter where you run around and fight to survive in a world full of monsters.
