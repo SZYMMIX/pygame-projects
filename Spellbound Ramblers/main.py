@@ -23,7 +23,7 @@ class Game:
         self.player_animations = {'down': [], 'left': [], 'right': [], 'up': []}
 
         for status in self.player_animations.keys():
-            path = join('Spellbound Ramblers', 'Assets', 'images', 'player', status)
+            path = join('Assets', 'images', 'player', status)
 
             self.player_animations[status] = [pygame.image.load(join(path, f'{i}.png')).convert_alpha() for i in range(4)]
 
