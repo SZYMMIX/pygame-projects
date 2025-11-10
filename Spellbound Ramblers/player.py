@@ -1,11 +1,11 @@
 from settings import *
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, groups, collision_sprites):
+    def __init__(self, groups, collision_sprites, pos):
         super().__init__(groups)
         self.image = pygame.image.load(join('Spellbound Ramblers', 'Assets', 'images', 'player', 'down', '0.png')).convert_alpha()
-        self.rect = self.image.get_frect(center = (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
-        self.hitbox_rect = self.rect.inflate(-60, 0)
+        self.rect = self.image.get_frect(center = pos)
+        self.hitbox_rect = self.rect.inflate(-60, -80)
 
         self.direction = pygame.math.Vector2()
         self.speed = 400
