@@ -2,6 +2,7 @@ from settings import *
 from player import Player
 from sprites import *
 from random import randint
+from pytmx.util_pygame import load_pygame
 
 class Game:
     def __init__(self):
@@ -14,11 +15,19 @@ class Game:
         self.all_sprites = pygame.sprite.Group()
         self.collision_sprites = pygame.sprite.Group()
 
-        for i in range(2):
-            CollisionSprite((self.all_sprites, self.collision_sprites), (randint(0, WINDOW_WIDTH), randint(0, WINDOW_HEIGHT)), (randint(50, 200), randint(50, 200)))
+        self.setup()
 
         self.player = Player(self.all_sprites, self.collision_sprites)
-   
+
+    def setup(self):
+        map = load_pygame(join('Spellbound Ramblers', 'Assets', 'data', 'maps', 'world.tmx'))
+        
+        for x, y, image in map.get_layer_by_name('Ground').tiles():
+            Sprite(self.all_sprites, (x * TILE_SIZE, y * TILE_SIZE), image)
+
+        for obj in map.get_layer_by_name('Objects'):
+            CollisionSprite((self.all_sprites, self.collision_sprites), (obj.x, obj.y), obj.image)
+            
     def run(self):
         while self.running:
             dt = self.clock.tick() / 1000
@@ -27,7 +36,7 @@ class Game:
                     self.running = False
             
             self.all_sprites.update(dt)
-            self.display_surface.fill(BACKGROUND_COLOR)
+            self.display_surface.fill('white')
             self.all_sprites.draw(self.display_surface)
             pygame.display.update()
         
