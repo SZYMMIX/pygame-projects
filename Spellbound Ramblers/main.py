@@ -11,22 +11,14 @@ class Game:
         self.clock = pygame.time.Clock()
         self.running = True
 
-        self._load_assets()
-
         self.all_sprites = pygame.sprite.Group()
+        self.collision_sprites = pygame.sprite.Group()
 
-        self.player = Player(self.all_sprites, self.player_animations)
-        for _ in range(randint(1,5)):
-            CollisionSprite(self.all_sprites, (randint(200, WINDOW_WIDTH - 200), randint(200, WINDOW_HEIGHT - 200)), (randint(50, 200), randint(100, 200)))
+        for i in range(2):
+            CollisionSprite((self.all_sprites, self.collision_sprites), (randint(0, WINDOW_WIDTH), randint(0, WINDOW_HEIGHT)), (randint(50, 200), randint(50, 200)))
 
-    def _load_assets(self):
-        self.player_animations = {'down': [], 'left': [], 'right': [], 'up': []}
-
-        for status in self.player_animations.keys():
-            path = join('Assets', 'images', 'player', status)
-
-            self.player_animations[status] = [pygame.image.load(join(path, f'{i}.png')).convert_alpha() for i in range(4)]
-
+        self.player = Player(self.all_sprites, self.collision_sprites)
+   
     def run(self):
         while self.running:
             dt = self.clock.tick() / 1000
