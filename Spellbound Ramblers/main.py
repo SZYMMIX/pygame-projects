@@ -27,7 +27,10 @@ class Game:
 
         for obj in map.get_layer_by_name('Objects'):
             CollisionSprite((self.all_sprites, self.collision_sprites), (obj.x, obj.y), obj.image)
-            
+
+        for obj in map.get_layer_by_name('Collisions'):
+            CollisionSprite((self.collision_sprites), (obj.x, obj.y), pygame.Surface((obj.width, obj.height)))
+
     def run(self):
         while self.running:
             dt = self.clock.tick() / 1000
