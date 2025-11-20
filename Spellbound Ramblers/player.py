@@ -30,6 +30,7 @@ class Player(pygame.sprite.Sprite):
         
         self.direction.y =  int(keys[pygame.K_DOWN] or keys[pygame.K_s]) - int(keys[pygame.K_UP] or keys[pygame.K_w])
         self.direction.x =  int(keys[pygame.K_RIGHT] or keys[pygame.K_d]) - int(keys[pygame.K_LEFT] or keys[pygame.K_a])
+
     def _move(self, dt):
         self.direction = self.direction.normalize() if self.direction else self.direction
 
@@ -56,7 +57,6 @@ class Player(pygame.sprite.Sprite):
         self._move(dt)
         self.animate(dt)
         
-
     def collision(self, direction):
         for sprite in self.collision_sprites:
             if sprite.rect.colliderect(self.hitbox_rect):

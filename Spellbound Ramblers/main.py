@@ -1,7 +1,7 @@
 from settings import *
 from player import Player
 from sprites import *
-from random import randint
+from random import randint, choice
 from pytmx.util_pygame import load_pygame
 from groups import AllSprites
 
@@ -12,25 +12,41 @@ class Game:
         pygame.display.set_caption("Spellbound Ramblers")
         self.clock = pygame.time.Clock()
         self.running = True
-        self.load_images()
 
         self.all_sprites = AllSprites()
         self.collision_sprites = pygame.sprite.Group()
         self.bullet_sprites = pygame.sprite.Group()
-
-        self.setup()
+        self.enemy_sprites = pygame.sprite.Group()
 
         self.can_shoot = True
         self.shoot_time = 0
-        self.gun_cooldown = 250
+        self.gun_cooldown = 350
+
+        self.enemy_event = pygame.event.custom_type()
+        pygame.time.set_timer(self.enemy_event, 500)
+        self.spawn_positions = []
+
+        self.load_images()
+        self.setup()
 
     def load_images(self):
         self.bullet_surf = pygame.image.load(join('Spellbound Ramblers', 'Assets', 'images', 'gun', 'bullet.png')).convert_alpha()
         self.bullet_surf = pygame.transform.scale_by(self.bullet_surf, 0.9)
 
+        folders = list(walk(join('Spellbound Ramblers', 'Assets', 'images', 'enemies')))[0][1]
+        self.enemy_frames = {}
+        for folder in folders:
+            for folder_path, _, file_names in walk(join('Spellbound Ramblers', 'Assets','images', 'enemies', folder)):
+                self.enemy_frames[folder] = []
+                for file_name in sorted(file_names, key= lambda name: int(name.split('.')[0])):
+                    full_path = join(folder_path, file_name)
+                    surf = pygame.image.load(full_path).convert_alpha()
+                    self.enemy_frames[folder].append(surf)
+
+
     def input(self):
         if pygame.mouse.get_pressed()[0] and self.can_shoot:
-            pos = self.gun.rect.center + self.gun.player_direction * 80
+            pos = self.gun.rect.center + self.gun.player_direction * 50
             Bullet((self.all_sprites, self.bullet_sprites), self.bullet_surf, pos, self.gun.player_direction)
             self.can_shoot = False
             self.shoot_time = pygame.time.get_ticks()
@@ -57,6 +73,16 @@ class Game:
             if marker.name == 'Player':
                 self.player = Player(self.all_sprites, self.collision_sprites, (marker.x, marker.y))
                 self.gun  = Gun(self.all_sprites, self.player)
+            else:
+                self.spawn_positions.append((marker.x, marker.y))
+
+    def bullet_collision(self):
+        if self.bullet_sprites:
+            for bullet in self.bullet_sprites:
+                collision_sprites = pygame.sprite.spritecollide(bullet, self.enemy_sprites, False, pygame.sprite.collide_mask)
+                if collision_sprites:
+                    for sprite in collision_sprites:
+                        sprite.destroy()
 
     def run(self):
         while self.running:
@@ -64,10 +90,15 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
+                
+                if event.type == self.enemy_event:
+                    Enemy((self.all_sprites, self.enemy_sprites), choice(self.spawn_positions), choice(list(self.enemy_frames.values())), self.player, self.collision_sprites)
             
             self.gun_timer()
             self.input()
             self.all_sprites.update(dt)
+            self.bullet_collision()
+
             self.display_surface.fill('white')
             self.all_sprites.draw(self.player.rect.center)
             pygame.display.update()
