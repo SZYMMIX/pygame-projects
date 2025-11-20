@@ -1,4 +1,5 @@
 from settings import *
+from math import sin
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, groups, collision_sprites, pos):
@@ -9,6 +10,11 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.image.load(join('Spellbound Ramblers', 'Assets', 'images', 'player', 'down', '0.png')).convert_alpha()
         self.rect = self.image.get_frect(center = pos)
         self.hitbox_rect = self.rect.inflate(-60, -80)
+
+        self.lifes = 3
+        self.is_vulnerable = True
+        self.hit_time = 0
+        self.invulnerability_duration = 700
 
         self.direction = pygame.math.Vector2()
         self.speed = 400
@@ -56,6 +62,9 @@ class Player(pygame.sprite.Sprite):
         self._handle_movement()
         self._move(dt)
         self.animate(dt)
+
+        self.check_vulnerability()
+        self.blink()
         
     def collision(self, direction):
         for sprite in self.collision_sprites:
@@ -70,4 +79,22 @@ class Player(pygame.sprite.Sprite):
                         self.hitbox_rect.bottom = sprite.rect.top
                     else:
                         self.hitbox_rect.top = sprite.rect.bottom
-            
+    
+    def damage(self):
+        if self.is_vulnerable:
+            self.is_vulnerable = False
+            self.lifes -= 1
+            self.hit_time = pygame.time.get_ticks()
+
+    def blink(self):
+        if not self.is_vulnerable:
+            alpha = (sin(pygame.time.get_ticks() / 20) * 127.5) + 127.5
+            self.image.set_alpha(alpha)
+        else:
+            self.image.set_alpha(255)
+
+    def check_vulnerability(self):
+        if not self.is_vulnerable:
+            current_time = pygame.time.get_ticks()
+            if current_time - self.hit_time >= self.invulnerability_duration:
+                self.is_vulnerable = True

@@ -20,11 +20,18 @@ class Game:
 
         self.can_shoot = True
         self.shoot_time = 0
-        self.gun_cooldown = 350
+        self.gun_cooldown = 300
 
         self.enemy_event = pygame.event.custom_type()
         pygame.time.set_timer(self.enemy_event, 500)
         self.spawn_positions = []
+        self.shoot_sound = pygame.mixer.Sound(join('Spellbound Ramblers', 'Assets', 'audio', 'shoot.wav'))
+        self.shoot_sound.set_volume(0.1)
+        self.game_music = pygame.mixer.Sound(join('Spellbound Ramblers', 'Assets', 'audio', 'music.wav'))
+        self.game_music.set_volume(0.1)
+        self.impact_sound = pygame.mixer.Sound(join('Spellbound Ramblers', 'Assets', 'audio', 'impact.ogg'))
+        self.impact_sound.set_volume(0.05)
+        self.game_music.play(loops= -1)
 
         self.load_images()
         self.setup()
@@ -46,6 +53,7 @@ class Game:
 
     def input(self):
         if pygame.mouse.get_pressed()[0] and self.can_shoot:
+            self.shoot_sound.play()
             pos = self.gun.rect.center + self.gun.player_direction * 50
             Bullet((self.all_sprites, self.bullet_sprites), self.bullet_surf, pos, self.gun.player_direction)
             self.can_shoot = False
@@ -81,8 +89,18 @@ class Game:
             for bullet in self.bullet_sprites:
                 collision_sprites = pygame.sprite.spritecollide(bullet, self.enemy_sprites, False, pygame.sprite.collide_mask)
                 if collision_sprites:
+                    self.impact_sound.play()
                     for sprite in collision_sprites:
                         sprite.destroy()
+                    bullet.kill()
+
+    def player_collision(self):
+        if self.player.is_vulnerable:
+            if pygame.sprite.spritecollide(self.player, self.enemy_sprites, True, pygame.sprite.collide_mask):
+                self.player.damage()
+
+        if self.player.lifes <= 0:
+            self.running = False
 
     def run(self):
         while self.running:
@@ -98,6 +116,7 @@ class Game:
             self.input()
             self.all_sprites.update(dt)
             self.bullet_collision()
+            self.player_collision()
 
             self.display_surface.fill('white')
             self.all_sprites.draw(self.player.rect.center)
