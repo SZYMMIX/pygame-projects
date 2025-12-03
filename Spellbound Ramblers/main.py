@@ -25,11 +25,11 @@ class Game:
         self.enemy_event = pygame.event.custom_type()
         pygame.time.set_timer(self.enemy_event, 500)
         self.spawn_positions = []
-        self.shoot_sound = pygame.mixer.Sound(join('Spellbound Ramblers', 'Assets', 'audio', 'shoot.wav'))
+        self.shoot_sound = pygame.mixer.Sound(join('Assets', 'audio', 'shoot.wav'))
         self.shoot_sound.set_volume(0.1)
-        self.game_music = pygame.mixer.Sound(join('Spellbound Ramblers', 'Assets', 'audio', 'music.wav'))
+        self.game_music = pygame.mixer.Sound(join('Assets', 'audio', 'music.wav'))
         self.game_music.set_volume(0.1)
-        self.impact_sound = pygame.mixer.Sound(join('Spellbound Ramblers', 'Assets', 'audio', 'impact.ogg'))
+        self.impact_sound = pygame.mixer.Sound(join('Assets', 'audio', 'impact.ogg'))
         self.impact_sound.set_volume(0.05)
         self.game_music.play(loops= -1)
 
@@ -37,13 +37,13 @@ class Game:
         self.setup()
 
     def load_images(self):
-        self.bullet_surf = pygame.image.load(join('Spellbound Ramblers', 'Assets', 'images', 'gun', 'bullet.png')).convert_alpha()
+        self.bullet_surf = pygame.image.load(join('Assets', 'images', 'gun', 'bullet.png')).convert_alpha()
         self.bullet_surf = pygame.transform.scale_by(self.bullet_surf, 0.9)
 
-        folders = list(walk(join('Spellbound Ramblers', 'Assets', 'images', 'enemies')))[0][1]
+        folders = list(walk(join('Assets', 'images', 'enemies')))[0][1]
         self.enemy_frames = {}
         for folder in folders:
-            for folder_path, _, file_names in walk(join('Spellbound Ramblers', 'Assets','images', 'enemies', folder)):
+            for folder_path, _, file_names in walk(join('Assets','images', 'enemies', folder)):
                 self.enemy_frames[folder] = []
                 for file_name in sorted(file_names, key= lambda name: int(name.split('.')[0])):
                     full_path = join(folder_path, file_name)
@@ -66,7 +66,7 @@ class Game:
                 self.can_shoot = True
 
     def setup(self):
-        map = load_pygame(join('Spellbound Ramblers', 'Assets', 'data', 'maps', 'world.tmx'))
+        map = load_pygame(join('Assets', 'data', 'maps', 'world.tmx'))
         
         for x, y, image in map.get_layer_by_name('Ground').tiles():
             Sprite(self.all_sprites, (x * TILE_SIZE, y * TILE_SIZE), image)

@@ -7,7 +7,7 @@ class Player(pygame.sprite.Sprite):
         self.load_images()
         self.state = 'down'
         self.frame_index = 0
-        self.image = pygame.image.load(join('Spellbound Ramblers', 'Assets', 'images', 'player', 'down', '0.png')).convert_alpha()
+        self.image = pygame.image.load(join('Assets', 'images', 'player', 'down', '0.png')).convert_alpha()
         self.rect = self.image.get_frect(center = pos)
         self.hitbox_rect = self.rect.inflate(-60, -80)
 
@@ -24,7 +24,7 @@ class Player(pygame.sprite.Sprite):
         self.frames = {'left': [], 'right': [], 'up': [], 'down': []}
 
         for state in self.frames.keys():
-            for folder_path, sub_folders, file_names in walk(join('Spellbound Ramblers', 'Assets', 'images', 'player', state)):
+            for folder_path, sub_folders, file_names in walk(join('Assets', 'images', 'player', state)):
                 if file_names:
                     for file_name in sorted(file_names, key= lambda name: int(name.split('.')[0])):
                         full_path = join(folder_path, file_name)

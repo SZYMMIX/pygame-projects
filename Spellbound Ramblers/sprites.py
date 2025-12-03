@@ -21,7 +21,7 @@ class Gun(pygame.sprite.Sprite):
         self.distance = 65
         self.player_direction = pygame.Vector2(1,0)
 
-        self.gun_surf = pygame.image.load(join('Spellbound Ramblers', 'Assets', 'images', 'gun', 'gun.png')).convert_alpha()
+        self.gun_surf = pygame.image.load(join('Assets', 'images', 'gun', 'gun.png')).convert_alpha()
         self.gun_surf = pygame.transform.scale_by(self.gun_surf, 0.7)
         self.image = self.gun_surf
         self.rect = self.image.get_frect(center = self.player.rect.center + self.player_direction * self.distance)
