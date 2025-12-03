@@ -2,7 +2,9 @@
 
 A classic, arcade-style top-down shooter built with Python and the Pygame library. Your mission is to survive as long as possible against a relentless meteor shower.
 
-![Gameplay Gif](Assets/gifs/SpaceShooter_gameplay1.gif)
+<p align="center">
+<img src="Assets/gifs/SpaceShooter_gameplay1.gif" alt="Gameplay gif">
+</p>
 
 ---
 
