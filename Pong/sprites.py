@@ -43,9 +43,10 @@ class Opponent(Paddle):
 
 
 class Ball(pygame.sprite.Sprite):
-    def __init__(self, groups, paddle_sprites):
+    def __init__(self, groups, paddle_sprites, update_score):
         super().__init__(groups)
         self.paddle_sprites = paddle_sprites
+        self.update_score = update_score
 
         self.image = pygame.Surface(SIZE["ball"])
         self.image.fill(COLORS["ball"])
@@ -59,10 +60,6 @@ class Ball(pygame.sprite.Sprite):
         self.collision('horizontal')
         self.rect.y += self.direction.y * self.speed * dt
         self.collision('vertical')
-
-        if self.rect.left <= 0 or self.rect.right >= WINDOW_WIDTH:
-            self.rect.center = (WINDOW_WIDTH//2, WINDOW_HEIGHT//2)
-            self.direction = pygame.Vector2(choice((1,-1)), uniform(0.7,0.8)*choice((1,-1)))
 
 
     def collision(self, direction):
@@ -86,6 +83,8 @@ class Ball(pygame.sprite.Sprite):
                         self.rect.top = sprite.rect.bottom
                         self.direction.y *= -1
 
+                if self.speed < 1000: self.speed += 35
+
     def wall_collision(self):
         if self.rect.bottom >= WINDOW_HEIGHT:
             self.rect.bottom = WINDOW_HEIGHT
@@ -94,6 +93,13 @@ class Ball(pygame.sprite.Sprite):
         if self.rect.top <= 0:
             self.rect.top = 0
             self.direction.y *= -1
+
+        if self.rect.left <= 0 or self.rect.right >= WINDOW_WIDTH:
+            if self.rect.left <= 0: self.update_score('player')
+            else: self.update_score('opponent')
+            self.rect.center = (WINDOW_WIDTH//2, WINDOW_HEIGHT//2)
+            self.direction = pygame.Vector2(choice((1,-1)), uniform(0.7,0.8)*choice((1,-1)))
+            self.speed = SPEED["paddle"]
 
     def update(self, dt):
         self.old_rect = self.rect.copy()

@@ -12,7 +12,7 @@ class Game:
         self.all_sprites = pygame.sprite.Group()
         self.paddle_sprites = pygame.sprite.Group()
         self.player = Player((self.all_sprites, self.paddle_sprites))
-        self.ball = Ball(self.all_sprites, self.paddle_sprites)
+        self.ball = Ball(self.all_sprites, self.paddle_sprites, self.update_score)
         Opponent((self.all_sprites, self.paddle_sprites), self.ball)
 
 
@@ -28,6 +28,17 @@ class Game:
         opponent_rect = opponent_surf.get_frect(center = (WINDOW_WIDTH / 2 - 150, 200))
         self.display_surface.blit(opponent_surf, opponent_rect)
 
+        dash_height = 20   
+        gap = 15           
+        x = WINDOW_WIDTH // 2
+        y = 0
+
+        while y < WINDOW_HEIGHT:
+            pygame.draw.line(self.display_surface, COLORS["bg detail"], (x, y), (x, y + dash_height), 6)
+            y += dash_height + gap
+
+    def update_score(self, side):
+        self.score[side] += 1
 
     def run(self):
         while self.running:
