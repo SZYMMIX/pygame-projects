@@ -55,6 +55,10 @@ class Ball(pygame.sprite.Sprite):
         self.direction = pygame.Vector2(choice((1,-1)), uniform(0.7, 0.8) * choice((1,-1)))
         self.speed = SPEED["ball"]
 
+        self.start_time = pygame.time.get_ticks()
+        self.is_waiting = False
+        self.wait_duration = 700
+
     def move(self, dt):
         self.rect.x += self.direction.x * self.speed * dt
         self.collision('horizontal')
@@ -97,11 +101,23 @@ class Ball(pygame.sprite.Sprite):
         if self.rect.left <= 0 or self.rect.right >= WINDOW_WIDTH:
             if self.rect.left <= 0: self.update_score('player')
             else: self.update_score('opponent')
-            self.rect.center = (WINDOW_WIDTH//2, WINDOW_HEIGHT//2)
-            self.direction = pygame.Vector2(choice((1,-1)), uniform(0.7,0.8)*choice((1,-1)))
-            self.speed = SPEED["paddle"]
+            
+            self.start_wait()
+
+    def start_wait(self):
+        self.is_waiting = True
+        self.wait_start = pygame.time.get_ticks()
+        self.rect.center = (-100, -100) 
+           
 
     def update(self, dt):
-        self.old_rect = self.rect.copy()
-        self.move(dt)
-        self.wall_collision()
+        if self.is_waiting:
+            if pygame.time.get_ticks() - self.wait_start >= self.wait_duration:
+                self.is_waiting = False
+                self.rect.center = (WINDOW_WIDTH//2, WINDOW_HEIGHT//2)
+                self.direction = pygame.Vector2(choice((1,-1)), uniform(0.7,0.8)*choice((1,-1)))
+                self.speed = SPEED["ball"]
+        else:
+            self.old_rect = self.rect.copy()
+            self.move(dt)
+            self.wall_collision()
