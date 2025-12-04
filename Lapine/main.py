@@ -1,4 +1,6 @@
 from settings import * 
+from sprites import *
+from groups import *
 
 class Game:
     def __init__(self):
@@ -8,9 +10,26 @@ class Game:
         self.clock = pygame.time.Clock()
         self.running = True
 
-        self.all_sprites = pygame.sprite.Group()
+        self.all_sprites = AllSprites()
         self.collision_sprites = pygame.sprite.Group()
 
+
+        self.setup()
+
+    def setup(self):
+        map = load_pygame(join("Lapine", 'Assets', 'data', 'maps', 'world.tmx'))
+        
+        for x, y, image in map.get_layer_by_name('Main').tiles():
+            Sprite((x * TILE_SIZE, y * TILE_SIZE), image, (self.all_sprites, self.collision_sprites))
+
+        for x, y, image in map.get_layer_by_name('Decoration'):
+            Sprite((x * TILE_SIZE, y * TILE_SIZE), image, self.all_sprites)
+
+        for marker in map.get_layer_by_name('Entities'):
+            if marker.name == 'Player':
+                self.player = Player((marker.x, marker.y), self.all_sprites, self.collision_sprites)
+            # else:
+            #     self.spawn_positions.append((marker.x, marker.y))
 
     def run(self):
         while self.running:
@@ -23,7 +42,7 @@ class Game:
             self.all_sprites.update(dt)
 
             self.display_surface.fill(BG_COLOR)
-            self.all_sprites.draw(self.display_surface)
+            self.all_sprites.draw(self.player.rect.center)
             pygame.display.update()
         
         pygame.quit()
