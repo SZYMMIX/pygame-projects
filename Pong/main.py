@@ -1,5 +1,6 @@
 from settings import *
 from sprites import *
+from groups import AllSprites
 
 class Game:
     def __init__(self):
@@ -9,15 +10,22 @@ class Game:
         self.clock = pygame.time.Clock()
         self.running = True
 
-        self.all_sprites = pygame.sprite.Group()
+        self.hit_sound = pygame.mixer.Sound(join('Pong', 'Assets', 'audio', 'hit1.mp3'))
+        self.hit_sound.set_volume(0.1)
+        self.score_sound = pygame.mixer.Sound(join('Pong', 'Assets', 'audio', 'score.mp3'))
+        self.score_sound.set_volume(0.1)
+
+        self.all_sprites = AllSprites()
         self.paddle_sprites = pygame.sprite.Group()
         self.player = Player((self.all_sprites, self.paddle_sprites))
-        self.ball = Ball(self.all_sprites, self.paddle_sprites, self.update_score)
+        self.ball = Ball(self.all_sprites, self.paddle_sprites, self.update_score, self.hit_sound, self.score_sound)
         Opponent((self.all_sprites, self.paddle_sprites), self.ball)
 
 
         self.score = {'player': 0, 'opponent': 0}
-        self.font = pygame.font.Font(join("Pong", "fonts", "PressStart2P-Regular.ttf"), 80)
+        self.font = pygame.font.Font(join("Pong", "Assets", "fonts", "PressStart2P-Regular.ttf"), 80)
+
+        
 
     def display_score(self):
         player_surf = self.font.render(str(self.score["player"]), True, COLORS['bg detail'])
@@ -51,7 +59,7 @@ class Game:
 
             self.display_surface.fill(COLORS["bg"])
             self.display_score()
-            self.all_sprites.draw(self.display_surface)
+            self.all_sprites.draw()
             pygame.display.update()
         
         pygame.quit()
