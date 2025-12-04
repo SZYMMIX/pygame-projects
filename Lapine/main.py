@@ -17,12 +17,12 @@ class Game:
         self.setup()
 
     def setup(self):
-        map = load_pygame(join("Lapine", 'Assets', 'data', 'maps', 'world.tmx'))
+        map = load_pygame(join("Lapine", "Assets", "data", "maps", "world.tmx"))
         
         for x, y, image in map.get_layer_by_name('Main').tiles():
             Sprite((x * TILE_SIZE, y * TILE_SIZE), image, (self.all_sprites, self.collision_sprites))
 
-        for x, y, image in map.get_layer_by_name('Decoration'):
+        for x, y, image in map.get_layer_by_name('Decoration').tiles():
             Sprite((x * TILE_SIZE, y * TILE_SIZE), image, self.all_sprites)
 
         for marker in map.get_layer_by_name('Entities'):

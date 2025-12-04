@@ -5,11 +5,10 @@ class Sprite(pygame.sprite.Sprite):
         super().__init__(groups)
         self.image = surf
         self.rect = self.image.get_frect(topleft = pos)
-        self.ground = True
 
 class Player(Sprite):
     def __init__(self, pos, groups, collision_sprites):
-        surf = pygame.Surface((40,70))
+        surf = pygame.image.load(join("Lapine", "Assets", "images", "player", "0.png"))
         super().__init__(pos, surf, groups)
         
         self.collision_sprites = collision_sprites
@@ -43,9 +42,3 @@ class Player(Sprite):
     def update(self, dt):
         self.input()
         self.move(dt)
-
-class CollisionSprite(pygame.sprite.Sprite):
-    def __init__(self, groups, pos, surf):
-        super().__init__(groups)
-        self.image = surf
-        self.rect = self.image.get_frect(topleft = pos)
