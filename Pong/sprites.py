@@ -20,7 +20,7 @@ class Paddle(pygame.sprite.Sprite):
         
         surf = pygame.Surface((size[0] + padding * 2, size[1] + padding * 2), pygame.SRCALPHA)
         
-        alpha = 230 
+        alpha = 220 
         
         rect = surf.get_rect()
         pygame.draw.rect(surf, color + (alpha,), rect, border_radius=border_radius + padding)
@@ -84,7 +84,7 @@ class Ball(pygame.sprite.Sprite):
     def generate_glow(self, size, color, border_radius):
         padding = 2 
         surf = pygame.Surface((size[0] + padding * 2, size[1] + padding * 2), pygame.SRCALPHA)
-        alpha = 230 
+        alpha = 220 
         rect = surf.get_rect()
         pygame.draw.rect(surf, color + (alpha,), rect, border_radius=border_radius + padding)
         
@@ -92,15 +92,15 @@ class Ball(pygame.sprite.Sprite):
 
     def move(self, dt):
         self.rect.x += self.direction.x * self.speed * dt
-        self.collision('horizontal')
+        self.collision("horizontal")
         self.rect.y += self.direction.y * self.speed * dt
-        self.collision('vertical')
+        self.collision("vertical")
 
 
     def collision(self, direction):
         for sprite in self.paddle_sprites:
             if sprite.rect.colliderect(self.rect):
-                if direction == 'horizontal':
+                if direction == "horizontal":
                     if self.rect.right >= sprite.rect.left and self.old_rect.right <= sprite.old_rect.left:
                         self.rect.right = sprite.rect.left
                         self.direction.x *= -1
@@ -117,24 +117,24 @@ class Ball(pygame.sprite.Sprite):
                     if self.rect.top <= sprite.rect.bottom and self.old_rect.top >= sprite.old_rect.bottom:
                         self.rect.top = sprite.rect.bottom
                         self.direction.y *= -1
-                self.hit_sound.play(1)
+                self.hit_sound.play()
                 if self.speed < 1000: self.speed += 35
 
     def wall_collision(self):
         if self.rect.bottom >= WINDOW_HEIGHT:
             self.rect.bottom = WINDOW_HEIGHT
             self.direction.y *= -1
-            self.hit_sound.play(1)
+            self.hit_sound.play()
 
         if self.rect.top <= 0:
             self.rect.top = 0
             self.direction.y *= -1
-            self.hit_sound.play(1)
+            self.hit_sound.play()
 
         if self.rect.left <= 0 or self.rect.right >= WINDOW_WIDTH:
-            if self.rect.left <= 0: self.update_score('player')
-            else: self.update_score('opponent')
-            self.score_sound.play(1)
+            if self.rect.left <= 0: self.update_score("player")
+            else: self.update_score("opponent")
+            self.score_sound.play()
             self.start_wait()
 
     def start_wait(self):

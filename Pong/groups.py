@@ -7,7 +7,7 @@ class AllSprites(pygame.sprite.Group):
 
     def draw(self):
         for sprite in self:
-            if hasattr(sprite, 'glow_surf'):
+            if hasattr(sprite, "glow_surf"):
                 glow_rect = sprite.glow_surf.get_rect(center=sprite.rect.center)
                 self.display_surface.blit(sprite.glow_surf, glow_rect)
 
