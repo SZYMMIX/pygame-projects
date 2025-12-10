@@ -2,6 +2,8 @@ from settings import *
 from sprites import *
 from groups import *
 from support import *
+from timer import Timer
+from random import randint
 
 class Game:
     def __init__(self):
@@ -13,9 +15,20 @@ class Game:
 
         self.all_sprites = AllSprites()
         self.collision_sprites = pygame.sprite.Group()
+        self.bullet_sprites = pygame.sprite.Group()
 
         self.load_assets()
         self.setup()
+
+        self.bee_timer = Timer(2000, func = self.create_bee, autostart = True, repeat = True)
+
+    def create_bee(self):
+        Bee(self.bee_frames, (randint(300, 500), randint(400,600)), self.all_sprites)
+
+    def create_bullet(self, pos, direction):
+        x = pos[0] + direction * 34 if direction == 1 else pos[0] + direction * 34 - self.bullet_surf.get_width()
+        Bullet((x, pos[1]), self.bullet_surf, direction, (self.all_sprites, self.bullet_sprites))
+        Fire(pos, self.fire_surf, self.all_sprites, self.player)
 
     def load_assets(self):
         self.player_frames = import_folder('Lapine', 'Assets', 'images', 'player')
@@ -41,9 +54,9 @@ class Game:
 
         for marker in map.get_layer_by_name('Entities'):
             if marker.name == 'Player':
-                self.player = Player((marker.x, marker.y), self.all_sprites, self.collision_sprites, self.player_frames)
+                self.player = Player((marker.x, marker.y), self.all_sprites, self.collision_sprites, self.player_frames, self.create_bullet)
         
-        Bee(self.bee_frames, (500, 600), self.all_sprites)
+
         Worm(self.worm_frames, (500, 500), self.all_sprites)
 
 
@@ -55,6 +68,7 @@ class Game:
                 if event.type == pygame.QUIT:
                     self.running = False 
             
+            self.bee_timer.update()
             self.all_sprites.update(dt)
 
             self.display_surface.fill(BG_COLOR)
