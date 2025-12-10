@@ -1,6 +1,7 @@
 from settings import * 
 from sprites import *
 from groups import *
+from support import *
 
 class Game:
     def __init__(self):
@@ -13,8 +14,21 @@ class Game:
         self.all_sprites = AllSprites()
         self.collision_sprites = pygame.sprite.Group()
 
-
+        self.load_assets()
         self.setup()
+
+    def load_assets(self):
+        self.player_frames = import_folder('Lapine', 'Assets', 'images', 'player')
+
+        self.bullet_surf = import_image('Lapine', 'Assets', 'images', 'gun', 'bullet')
+        self.fire_surf = import_image('Lapine', 'Assets', 'images', 'gun', 'fire')
+        self.bee_frames = import_folder('Lapine', 'Assets', 'images', 'enemies', 'bee')
+        self.worm_frames = import_folder('Lapine', 'Assets', 'images', 'enemies', 'worm')
+
+        self.audio = audio_importer('Lapine', 'Assets', 'audio')
+        self.audio['music'].set_volume(0.04)
+        self.audio['music'].play(-1)
+
 
     def setup(self):
         map = load_pygame(join("Lapine", "Assets", "data", "maps", "world.tmx"))
@@ -27,7 +41,11 @@ class Game:
 
         for marker in map.get_layer_by_name('Entities'):
             if marker.name == 'Player':
-                self.player = Player((marker.x, marker.y), self.all_sprites, self.collision_sprites)
+                self.player = Player((marker.x, marker.y), self.all_sprites, self.collision_sprites, self.player_frames)
+        
+        Bee(self.bee_frames, (500, 600), self.all_sprites)
+        Worm(self.worm_frames, (500, 500), self.all_sprites)
+
 
     def run(self):
         while self.running:
