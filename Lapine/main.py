@@ -28,8 +28,6 @@ class Game:
         for marker in map.get_layer_by_name('Entities'):
             if marker.name == 'Player':
                 self.player = Player((marker.x, marker.y), self.all_sprites, self.collision_sprites)
-            # else:
-            #     self.spawn_positions.append((marker.x, marker.y))
 
     def run(self):
         while self.running:
