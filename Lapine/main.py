@@ -34,17 +34,17 @@ class Game:
 
 
     def load_assets(self):
-        self.player_frames = import_folder('Lapine', 'Assets', 'images', 'player')
+        self.player_frames = import_folder("Assets", "images", "player")
 
-        self.bullet_surf = import_image('Lapine', 'Assets', 'images', 'gun', 'bullet')
-        self.fire_surf = import_image('Lapine', 'Assets', 'images', 'gun', 'fire')
-        self.bee_frames = import_folder('Lapine', 'Assets', 'images', 'enemies', 'bee')
-        self.worm_frames = import_folder('Lapine', 'Assets', 'images', 'enemies', 'worm')
+        self.bullet_surf = import_image("Assets", "images", "gun", "bullet")
+        self.fire_surf = import_image("Assets", "images", "gun", "fire")
+        self.bee_frames = import_folder("Assets", "images", "enemies", "bee")
+        self.worm_frames = import_folder("Assets", "images", "enemies", "worm")
 
-        self.audio = audio_importer('Lapine', 'Assets', 'audio')
+        self.audio = audio_importer("Assets", "audio")
 
     def setup(self):
-        map = load_pygame(join("Lapine", "Assets", "data", "maps", "world.tmx"))
+        map = load_pygame(join("Assets", "data", "maps", "world.tmx"))
         self.level_width = map.width * TILE_SIZE
         self.level_height = map.height * TILE_SIZE
 
