@@ -44,6 +44,19 @@ A polished recreation of the arcade classic featuring neon-glow visuals, dynamic
 
 ---
 
+### 🐰 Lapine
+A side-scrolling action game where you play as a rabbit using double-jumps and a gun to fight off waves of bees and worms.
+
+
+**[➡️ Click here for gameplay details, screenshots, and controls](./Lapine/)**
+
+
+**Quick Start:**
+1. Navigate to the game's directory: `cd "Lapine"`
+2. Run the main script: `python main.py`
+
+---
+
 ## 🛠️ Global Requirements
 
 All projects in this repository require Python and the Pygame library.
