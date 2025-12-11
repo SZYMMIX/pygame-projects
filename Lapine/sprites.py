@@ -64,11 +64,20 @@ class AnimatedSprite(Sprite):
 class Enemy(AnimatedSprite):
     def __init__(self, frames, pos, groups):
         super().__init__(frames, pos, groups)
+        self.death_timer = Timer(200, func= self.kill)
+
+    def destroy(self):
+        self.death_timer.activate()
+        self.animation_speed = 0
+        self.image = pygame.mask.from_surface(self.image).to_surface()
+        self.image.set_colorkey('black')
 
     def update(self, dt):
-        self.move(dt)
-        self.animate(dt)
-        self.constraint()
+        self.death_timer.update()
+        if not self.death_timer:
+            self.move(dt)
+            self.animate(dt)
+            self.constraint()
 
 
 class Player(AnimatedSprite):
@@ -81,16 +90,22 @@ class Player(AnimatedSprite):
         self.direction = pygame.Vector2()
         self.speed = 400
         self.gravity = 50
-        self.jump_speed = 19
+        self.jump_speed = 18
+        self.double_jump = True
         self.on_floor = False
         self.shoot_timer = Timer(500)
 
     def input(self):
         keys = pygame.key.get_pressed()
+        input_just_pressed = pygame.key.get_just_pressed()
+        
         self.direction.x = int(keys[pygame.K_RIGHT]) - int(keys[pygame.K_LEFT])
 
-        if keys[pygame.K_UP] and self.on_floor == True:
+        if input_just_pressed[pygame.K_UP] and self.on_floor == True :
             self.direction.y = -self.jump_speed
+        elif input_just_pressed[pygame.K_UP] and self.double_jump:
+            self.direction.y = -self.jump_speed
+            self.double_jump = False
 
         if keys[pygame.K_SPACE] and not self.shoot_timer:
             self.create_bullet(self.rect.center, -1 if self.flip else 1)
@@ -118,7 +133,11 @@ class Player(AnimatedSprite):
     def check_floor(self):
         bottom_rect = pygame.FRect((0,0), (self.rect.width, 2)).move_to(midtop = self.rect.midbottom)
 
-        self.on_floor = True if bottom_rect.collidelist([sprite.rect for sprite in self.collision_sprites]) != -1 else False
+        if bottom_rect.collidelist([sprite.rect for sprite in self.collision_sprites]) != -1:
+            self.on_floor = True
+            self.double_jump = True
+        else:
+            self.on_floor = False
 
     def animate(self, dt):
         if self.direction.x != 0:
@@ -157,11 +176,18 @@ class Bee(Enemy):
 
 
 class Worm(Enemy):
-    def __init__(self, frames, pos, groups):
-        super().__init__(frames, pos, groups)
+    def __init__(self, frames, rect, groups):
+        super().__init__(frames, rect.topleft, groups)
+        self.move_rect = rect
+        self.rect.bottomleft = rect.bottomleft
+        self.direction = 1
+        self.speed = randint(140, 180)
+
 
     def move(self, dt):
-        pass
+        self.rect.x += self.direction * self.speed * dt
 
     def constraint(self):
-        pass
+        if not self.move_rect.contains(self.rect):
+            self.direction *= -1
+            self.frames = [pygame.transform.flip(frame, True, False) for frame in self.frames]
