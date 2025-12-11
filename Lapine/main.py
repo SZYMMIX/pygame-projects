@@ -23,12 +23,14 @@ class Game:
         self.bee_timer = Timer(2000, func = self.create_bee, autostart = True, repeat = True)
 
     def create_bee(self):
-        Bee(self.bee_frames, (randint(300, 500), randint(400,600)), self.all_sprites)
+        Bee(frames = self.bee_frames, pos = (self.level_width + WINDOW_WIDTH, randint(50, self.level_height - 50)), groups = self.all_sprites, speed = randint(200, 350))
 
     def create_bullet(self, pos, direction):
         x = pos[0] + direction * 34 if direction == 1 else pos[0] + direction * 34 - self.bullet_surf.get_width()
-        Bullet((x, pos[1]), self.bullet_surf, direction, (self.all_sprites, self.bullet_sprites))
+        Bullet((x, pos[1]), self.bullet_surf, direction, (self.all_sprites, self.bullet_sprites), self.level_width)
         Fire(pos, self.fire_surf, self.all_sprites, self.player)
+        self.audio['shoot'].play()
+
 
     def load_assets(self):
         self.player_frames = import_folder('Lapine', 'Assets', 'images', 'player')
@@ -41,11 +43,14 @@ class Game:
         self.audio = audio_importer('Lapine', 'Assets', 'audio')
         self.audio['music'].set_volume(0.04)
         self.audio['music'].play(-1)
+        self.audio['shoot'].set_volume(0.04)
 
 
     def setup(self):
         map = load_pygame(join("Lapine", "Assets", "data", "maps", "world.tmx"))
-        
+        self.level_width = map.width * TILE_SIZE
+        self.level_height = map.height * TILE_SIZE
+
         for x, y, image in map.get_layer_by_name('Main').tiles():
             Sprite((x * TILE_SIZE, y * TILE_SIZE), image, (self.all_sprites, self.collision_sprites))
 

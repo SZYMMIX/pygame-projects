@@ -1,5 +1,7 @@
 from settings import *
 from timer import Timer
+from math import sin
+from random import randint
 
 class Sprite(pygame.sprite.Sprite):
     def __init__(self, pos, surf, groups):
@@ -8,18 +10,19 @@ class Sprite(pygame.sprite.Sprite):
         self.rect = self.image.get_frect(topleft = pos)
 
 class Bullet(Sprite):
-    def __init__(self, pos, surf, direction, groups):
+    def __init__(self, pos, surf, direction, groups, level_width):
         super().__init__(pos, surf, groups)
 
         self.image = pygame.transform.flip(self.image, direction == -1, False)
 
+        self.level_width = level_width
         self.direction = direction
         self.speed = 800
 
     def update(self, dt):
         self.rect.x += self.direction * self.speed * dt 
 
-        if self.rect.x > 3000:
+        if self.rect.left > self.level_width + WINDOW_WIDTH or self.rect.right < 0:
             self.kill()
 
 class Fire(Sprite):
@@ -57,6 +60,16 @@ class AnimatedSprite(Sprite):
         self.frame_index += self.animation_speed * dt
 
         self.image = self.frames[int(self.frame_index) % len(self.frames)]
+
+class Enemy(AnimatedSprite):
+    def __init__(self, frames, pos, groups):
+        super().__init__(frames, pos, groups)
+
+    def update(self, dt):
+        self.move(dt)
+        self.animate(dt)
+        self.constraint()
+
 
 class Player(AnimatedSprite):
     def __init__(self, pos, groups, collision_sprites, frames, create_bullet):
@@ -126,16 +139,29 @@ class Player(AnimatedSprite):
         self.move(dt)
         self.animate(dt)
 
-class Bee(AnimatedSprite):
-    def __init__(self, frames, pos, groups):
+class Bee(Enemy):
+    def __init__(self, frames, pos, groups, speed):
         super().__init__(frames, pos, groups)
     
-    def update(self, dt):
-        self.animate(dt)
+        self.speed = speed
+        self.amplitude = randint(300, 400)
+        self.frequency = randint(300, 600)
 
-class Worm(AnimatedSprite):
+    def move(self, dt):
+        self.rect.x -= self.speed * dt
+        self.rect.y += sin(pygame.time.get_ticks() / self.frequency) * self.amplitude * dt
+
+    def constraint(self):
+        if self.rect.right <= 0:
+            self.kill()
+
+
+class Worm(Enemy):
     def __init__(self, frames, pos, groups):
         super().__init__(frames, pos, groups)
 
-    def update(self, dt):
-        self.animate(dt)
+    def move(self, dt):
+        pass
+
+    def constraint(self):
+        pass
