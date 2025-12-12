@@ -17,19 +17,20 @@ class Game:
 
         self.all_sprites = pygame.sprite.Group()
 
-        player_monster_list = ["Sparchu", "Cleaf", "Jacana"]
+        player_monster_list = ["Sparchu", "Cleaf", "Jacana", "Atrox", "Pouch", "Atrox", "Pouch"]
         self.player_monsters = [Monster(name, self.back_surfs[name]) for name in player_monster_list]
         self.monster = self.player_monsters[0]
         self.all_sprites.add(self.monster)
         opponent_name = choice(list(MONSTER_DATA.keys()))
         self.opponent = Opponent(opponent_name, self.front_surfs[opponent_name], self.all_sprites)
 
-        self.ui = UI(self.monster)
+        self.ui = UI(self.monster, self.player_monsters, self.simple_surfs)
 
     def import_assets(self):
         self.back_surfs = folder_importer('Gauntlet Legends', 'Assets', 'images', 'back')
         self.front_surfs = folder_importer('Gauntlet Legends', 'Assets', 'images', 'front')
         self.bg_surfs = folder_importer('Gauntlet Legends', 'Assets', 'images', 'other')
+        self.simple_surfs = folder_importer('Gauntlet Legends', 'Assets', 'images', 'simple')
 
     def draw_monster_floor(self):
         for sprite in self.all_sprites:

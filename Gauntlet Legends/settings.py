@@ -7,7 +7,7 @@ WINDOW_WIDTH, WINDOW_HEIGHT = 1280,720
 COLORS = {
     'black': '#000000',
     'red': '#ee1a0f',
-    'gray': 'gray',
+    'grey': 'grey',
     'white': '#ffffff',
 }
 
