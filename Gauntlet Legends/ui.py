@@ -39,11 +39,12 @@ class UI:
                     self.state = 'general'
 
             case 'switch':
-                self.switch_index = (self.switch_index + int(keys[pygame.K_DOWN]) - int(keys[pygame.K_UP])) % len(self.available_monsters)
+                if self.available_monsters:
+                    self.switch_index = (self.switch_index + int(keys[pygame.K_DOWN]) - int(keys[pygame.K_UP])) % len(self.available_monsters)
 
-                if keys[pygame.K_SPACE]:
-                    self.get_input(self.state, self.available_monsters[self.switch_index])
-                    self.state = 'general'
+                    if keys[pygame.K_SPACE]:
+                        self.get_input(self.state, self.available_monsters[self.switch_index])
+                        self.state = 'general'
 
             case 'heal':
                 self.get_input('heal')

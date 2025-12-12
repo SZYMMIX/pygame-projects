@@ -13,6 +13,7 @@ def audio_importer(*path):
     for folder_path, _, file_names in walk(join(*path)):
         for file_name in file_names:
             audio_dict[file_name.split('.')[0]] = pygame.mixer.Sound(join(folder_path, file_name))
+            audio_dict[file_name.split('.')[0]].set_volume(0.04)
     return audio_dict
 
 def tile_importer(cols, *path):
