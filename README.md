@@ -57,6 +57,19 @@ A side-scrolling action game where you play as a rabbit using double-jumps and a
 
 ---
 
+### ⚔️ Gauntlet Legends
+A turn-based RPG monster battler featuring elemental types, team switching, and animated combat skills.
+
+
+**[➡️ Click here for gameplay details, screenshots, and controls](./Gauntlet%20Legends/)**
+
+
+**Quick Start:**
+1. Navigate to the game's directory: `cd "Gauntlet Legends"`
+2. Run the main script: `python main.py`
+
+---
+
 ## 🛠️ Global Requirements
 
 All projects in this repository require Python and the Pygame library.
