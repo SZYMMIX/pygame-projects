@@ -90,12 +90,12 @@ class Game:
             timer.update()
 
     def import_assets(self):
-        self.back_surfs = folder_importer('Gauntlet Legends', 'Assets', 'images', 'back')
-        self.front_surfs = folder_importer('Gauntlet Legends', 'Assets', 'images', 'front')
-        self.bg_surfs = folder_importer('Gauntlet Legends', 'Assets', 'images', 'other')
-        self.simple_surfs = folder_importer('Gauntlet Legends', 'Assets', 'images', 'simple')
-        self.attack_frames = tile_importer(4, 'Gauntlet Legends', 'Assets', 'images', 'attacks')
-        self.audio = audio_importer('Gauntlet Legends', 'Assets', 'audio')
+        self.back_surfs = folder_importer('Assets', 'images', 'back')
+        self.front_surfs = folder_importer('Assets', 'images', 'front')
+        self.bg_surfs = folder_importer('Assets', 'images', 'other')
+        self.simple_surfs = folder_importer('Assets', 'images', 'simple')
+        self.attack_frames = tile_importer(4, 'Assets', 'images', 'attacks')
+        self.audio = audio_importer('Assets', 'audio')
 
     def draw_monster_floor(self):
         for sprite in self.all_sprites:
