@@ -70,7 +70,7 @@ class UI:
                 x = rect.left + rect.width / (self.cols * 2) + (rect.width / self.cols) * col
                 y = rect.top + rect.height / (self.rows * 2) + (rect.height / self.rows) * row
                 i = col + 2 * row
-                color = COLORS['grey'] if col == index['col'] and row == index['row'] else COLORS['black']
+                color = COLORS['black'] if col == index['col'] and row == index['row'] else COLORS['choice_grey']
 
                 text_surf = self.font.render(options[i], True, color)
                 text_rect = text_surf.get_frect(center= (x,y))
@@ -85,7 +85,7 @@ class UI:
         for i in range(len(self.available_monsters)):
             x = rect.centerx
             y = rect.top + rect.height / (self.visible_monsters * 2) + rect.height / self.visible_monsters * i + v_offset
-            color = COLORS['grey'] if i == self.switch_index else COLORS['black']
+            color = COLORS['black'] if i == self.switch_index else COLORS['choice_grey']
             name = self.available_monsters[i].name
 
             simple_surf = self.simple_surfs[name]

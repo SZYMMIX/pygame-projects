@@ -8,6 +8,7 @@ COLORS = {
     'black': '#000000',
     'red': '#ee1a0f',
     'grey': 'grey',
+    'choice_grey': "#5E5E5E",
     'white': '#ffffff',
 }
 
